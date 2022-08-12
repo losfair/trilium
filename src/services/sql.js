@@ -12,6 +12,7 @@ const fs = require("fs-extra");
 
 const dbConnection = new Database(dataDir.DOCUMENT_PATH);
 //dbConnection.pragma('journal_mode = WAL');
+dbConnection.pragma('cache_size = -10000'); // 10 MB
 
 const LOG_ALL_QUERIES = false;
 
