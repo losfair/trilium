@@ -30,7 +30,7 @@
     "archiver": "5.3.1",
     "async-mutex": "0.3.2",
     "axios": "0.27.2",
-    "better-sqlite3": "file:/home/ubuntu/Projects/better-sqlite3",
+    "better-sqlite3": "git+https://github.com/mvsqlite-ports/better-sqlite3#f06a4f7f991f833821e12794b34fa07ca60d33af",
     "chokidar": "3.5.3",
     "cls-hooked": "4.2.2",
     "commonmark": "0.30.0",
