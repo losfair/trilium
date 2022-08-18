@@ -180,6 +180,19 @@ dbReady.then(() => {
     setTimeout(() => optimize(), 60 * 60 * 1000);
 
     setInterval(() => optimize(), 10 * 60 * 60 * 1000);
+
+    const loadBecca = () => require("../becca/becca_loader").load();
+    const loadBeccaInterval = 60 * 1000;
+
+    // setTimeout is used here instead of setInterval so that we still have time to sleep
+    // after a long `loadBecca` run
+    setTimeout(() => {
+        try {
+            loadBecca();
+        } finally {
+            setTimeout(loadBecca, loadBeccaInterval);
+        }
+    }, loadBeccaInterval)
 });
 
 function getDbSize() {
