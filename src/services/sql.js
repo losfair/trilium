@@ -11,7 +11,7 @@ const cls = require('./cls');
 const fs = require("fs-extra");
 
 const dbConnection = new Database(dataDir.DOCUMENT_PATH);
-dbConnection.pragma('journal_mode = WAL');
+//dbConnection.pragma('journal_mode = WAL');
 
 const LOG_ALL_QUERIES = false;
 

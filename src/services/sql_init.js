@@ -154,7 +154,11 @@ function optimize() {
     log.info("Optimizing database");
     const start = Date.now();
 
-    sql.execute("PRAGMA optimize");
+    try {
+        sql.execute("PRAGMA optimize");
+    } catch(e) {
+        log.error(`PRAGMA optimize failed with error ` + e.stack);
+    }
 
     log.info(`Optimization finished in ${Date.now() - start}ms.`);
 }
@@ -175,6 +179,19 @@ dbReady.then(() => {
     setTimeout(() => optimize(), 60 * 60 * 1000);
 
     setInterval(() => optimize(), 10 * 60 * 60 * 1000);
+
+    const loadBecca = () => require("../becca/becca_loader").load();
+    const loadBeccaInterval = 60 * 1000;
+
+    // setTimeout is used here instead of setInterval so that we still have time to sleep
+    // after a long `loadBecca` run
+    setTimeout(() => {
+        try {
+            loadBecca();
+        } finally {
+            setTimeout(loadBecca, loadBeccaInterval);
+        }
+    }, loadBeccaInterval)
 });
 
 function getDbSize() {
