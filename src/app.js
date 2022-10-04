@@ -19,6 +19,24 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+if (process.env.TRILIUM_IDLE_TIMEOUT_MS) {
+    const idleTimeout = parseInt(process.env.TRILIUM_IDLE_TIMEOUT_MS);
+    let timeoutId = 0;
+    const renewTimeout = () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            log.info("Idle timeout reached, exiting.");
+            process.exit(0);
+        }, idleTimeout);
+    }
+    app.use((req, res, next) => {
+        renewTimeout();
+        return next();
+    });
+    renewTimeout();
+    console.log(`Idle timeout set to ${idleTimeout}ms`);
+}
+
 if (!utils.isElectron()) {
     app.use(compression()); // HTTP compression
 }
