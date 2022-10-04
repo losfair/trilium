@@ -29,7 +29,9 @@ async function migrate() {
     const migrations = [];
 
     // backup before attempting migration
-    await backupService.backupNow("before-migration");
+    if(process.env.TRILIUM_DISABLE_BACKUP_BEFORE_MIGRATION !== "1") {
+        await backupService.backupNow("before-migration");
+    }
 
     const currentDbVersion = getDbVersion();
 
