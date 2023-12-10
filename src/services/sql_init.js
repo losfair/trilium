@@ -154,7 +154,11 @@ function optimize() {
     log.info("Optimizing database");
     const start = Date.now();
 
-    sql.execute("PRAGMA optimize");
+    try {
+        sql.execute("PRAGMA optimize");
+    } catch(e) {
+        log.error(`PRAGMA optimize failed with error ` + e.stack);
+    }
 
     log.info(`Optimization finished in ${Date.now() - start}ms.`);
 }

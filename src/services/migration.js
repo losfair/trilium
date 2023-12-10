@@ -17,12 +17,14 @@ async function migrate() {
     }
 
     // backup before attempting migration
-    await backupService.backupNow(
-        // creating a special backup for versions 0.60.X, the changes in 0.61 are major.
-        currentDbVersion === 214
-            ? `before-migration-v060`
-            : 'before-migration'
-    );
+    if(process.env.TRILIUM_DISABLE_BACKUP_BEFORE_MIGRATION !== "1") {
+        await backupService.backupNow(
+            // creating a special backup for versions 0.60.X, the changes in 0.61 are major.
+            currentDbVersion === 214
+                ? `before-migration-v060`
+                : 'before-migration'
+        );
+    }
 
     const migrations = fs.readdirSync(resourceDir.MIGRATIONS_DIR).map(file => {
         const match = file.match(/^([0-9]{4})__([a-zA-Z0-9_ ]+)\.(sql|js)$/);
